@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>To-Do List</h2>
+  <input type="text" id="taskInput" placeholder="Add new task...">
+  <button onclick="addTask()" id="addBtn">Add Task</button>
+
+  <div id="taskList">
+    <!-- Tasks will be dynamically added here -->
+  </div>
+</div>
+
+<script>
+  function addTask() {
+    var taskInput = document.getElementById("taskInput");
+    var taskText = taskInput.value.trim();
+    if (taskText === "") {
+      alert("Please enter a task!");
+      return;
+    }
+
+    var taskList = document.getElementById("taskList");
+    var newTask = document.createElement("div");
+    newTask.className = "task";
+    newTask.innerHTML = `
+      <input type="checkbox" onchange="toggleTaskCompletion(this)">
+      <span>${taskText}</span>
+      <span class="priority" onclick="changePriority(this)">priority</span>
+      <button class="delete-btn" onclick="deleteTask(this)">Delete</button>
+    `;
+    taskList.appendChild(newTask);
+
+    taskInput.value = "";
+  }
+
+  function toggleTaskCompletion(checkbox) {
+    var taskText = checkbox.nextElementSibling;
+    if (checkbox.checked) {
+      taskText.classList.add("completed");
+    } else {
+      taskText.classList.remove("completed");
+    }
+  }
+
+  function deleteTask(btn) {
+    var task = btn.parentElement;
+    task.parentElement.removeChild(task);
+  }
+
+  function changePriority(prioritySpan) {
+    var currentPriority = prioritySpan.textContent;
+    if (currentPriority === "Low") {
+      prioritySpan.textContent = "Medium";
+      prioritySpan.style.backgroundColor = "#FFA500"; 
+    } else if (currentPriority === "Medium") {
+      prioritySpan.textContent = "High";
+      prioritySpan.style.backgroundColor = "#FF4500"; 
+    } else {
+      prioritySpan.textContent = "Low";
+      prioritySpan.style.backgroundColor = "#FFD700";
+    }
+  }
+</script>
+
+</body>
+</html>
